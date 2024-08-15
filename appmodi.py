@@ -11,9 +11,9 @@ vectorizer = joblib.load('model/vectorizer.pkl')
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        email = request.form['email']
-        prediction = predict_email(model, vectorizer, email)
-        return render_template('index.html', prediction=prediction, email=email)
+        email = request.form['email'] #storing the entered content in the website's form
+        prediction = predict_email(model, vectorizer, email) #using the model to predict the given mail
+        return render_template('index.html', prediction=prediction, email=email) 
     return render_template('index.html')
 
 if __name__ == '__main__':
