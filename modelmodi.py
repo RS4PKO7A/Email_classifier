@@ -7,10 +7,9 @@ import joblib
 
 # Load and preprocess the dataset
 def load_data():
-    df = pd.read_csv('data/emails_dataset.csv')
-    # Additional datasets can be merged here for data augmentation
-    # Example: df = pd.concat([df, pd.read_csv('data/additional_emails.csv')])
-    vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
+    df = pd.read_csv('data/emails_dataset.csv') #loading the dataset
+    
+    vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7) #vectorizing the texts (for common words)
     X = vectorizer.fit_transform(df['email'])
     y = df['label']
     return X, y, vectorizer
@@ -18,10 +17,11 @@ def load_data():
 # Train the Naive Bayes model
 def train_model():
     X, y, vectorizer = load_data()
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-    model = MultinomialNB()
-    model.fit(X_train, y_train)
-    y_pred = model.predict(X_test)
+    #splitting the datasets into two parts (train and test)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42) 
+    model = MultinomialNB() #creating a blank instance
+    model.fit(X_train, y_train) #training the model
+    y_pred = model.predict(X_test) #testing the model with the 30% mails
     
     # Evaluate the model
     accuracy = accuracy_score(y_test, y_pred)
