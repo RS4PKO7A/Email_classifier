@@ -7,10 +7,14 @@
     <style>
         /* Global Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
@@ -19,6 +23,8 @@
             padding: 40px;
             background-color: #fff;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
         }
 
         /* Heading Styles */
@@ -26,6 +32,7 @@
             text-align: center;
             color: #333;
             margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
         }
 
         /* Form Styles */
@@ -43,6 +50,7 @@
             border-radius: 5px;
             resize: vertical;
             margin-bottom: 20px;
+            animation: slideIn 0.5s ease-in-out;
         }
 
         button {
@@ -53,6 +61,7 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            animation: fadeIn 1s ease-in-out;
         }
 
         button:hover {
@@ -63,23 +72,89 @@
         .result {
             margin-top: 30px;
             text-align: center;
+            animation: fadeIn 1s ease-in-out;
         }
 
         .result h2 {
             color: #333;
         }
+
+        .spam {
+            color: #e74c3c;
+        }
+
+        .legitimate {
+            color: #2ecc71;
+        }
+
+        .empty {
+            color: #f39c12;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Character Styles */
+        .character {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: url('character.png');
+            background-size: cover;
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
+        <div class="character"></div>
         <h1>Email Classifier</h1>
         <form method="post">
             <textarea name="email" rows="10" placeholder="Enter the email content here...">{{ email }}</textarea>
-            <button type="submit">Check</button>
+            <button type="submit">Predict</button>
         </form>
         {% if prediction %}
             <div class="result">
-                <h2>Prediction: {{ prediction }}</h2>
+                {% if not email %}
+                    <h2 class="empty">Please enter an email to check</h2>
+                {% elif prediction == "spam" %}
+                    <h2 class="spam">Looks like the email is spam</h2>
+                {% else %}
+                    <h2 class="legitimate">The email appears to be legitimate</h2>
+                {% endif %}
             </div>
         {% endif %}
     </div>
